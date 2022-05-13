@@ -1,11 +1,12 @@
 const { Sequelize, DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt')
 const sequelize = new Sequelize('groupomania', 'root', '1712Sebout!', {
     host: 'localhost',
     port: '3306',
     dialect: 'mysql'
 });
 
-const User = sequelize.define('User', {
+const userSchema = sequelize.define('User', {
     pseudo: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -30,9 +31,16 @@ const User = sequelize.define('User', {
     },
   },
   {
-      timestamps: false
-  }
+    timestamps: false
+  },
 )
 
-const userModel = sequelize.model('User', User)
+// function bcrypt 
+// userSchema.pre('save', async function(next) {
+//     const salt = await bcrypt.genSalt()
+//     this.password = await bcrypt.hash(this.password, salt)
+//     next()
+// }) 
+
+const userModel = sequelize.model('User', userSchema)
 module.exports = userModel;
