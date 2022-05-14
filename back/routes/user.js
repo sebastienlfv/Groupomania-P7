@@ -9,8 +9,8 @@ router.post('/signin', authCtrl.signin);
 router.get('/logout', authCtrl.logout)
 
 // user db
-router.get('/', userCtrl.getAllUsers)
 router.get('/:id', userCtrl.userInfo)
+router.get('/', userCtrl.getAllUsers)
 router.delete('/:id', userCtrl.deleteUser)
 
 

@@ -1,12 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const userRoutes = require('./routes/user')
+const dotenv = require('dotenv')
 const app = express();
 const Sequelize = require('sequelize')
 
 // connexion à la base de donnée
+dotenv.config()
 
-const sequelize = new Sequelize('groupomania', 'root', '1712Sebout!', {
+const sequelize = new Sequelize('groupomania', 'root', process.env.MDP_DATABASE, {
     host: 'localhost',
     port: '3306',
     dialect: 'mysql'
