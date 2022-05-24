@@ -1,17 +1,26 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt')
-const sequelize = new Sequelize('groupomania', 'root', '1712Sebout!', {
+const sequelize = new Sequelize('groupomania', 'root', process.env.MDP_DATABASE, {
     host: 'localhost',
     port: '3306',
     dialect: 'mysql'
 });
 
 const userSchema = sequelize.define('User', {
-    pseudo: {
+    firstname: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-        validator: {
+        validate: {
+            min: 3,
+            max: 30,
+            notEmpty: true
+        }
+    },
+    lastname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
             min: 3,
             max: 30,
             notEmpty: true
@@ -21,8 +30,8 @@ const userSchema = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-        validator: {
-            isEmail: true
+        validate: {
+            isEmail: true,
         }
     },
     password: {
@@ -34,13 +43,6 @@ const userSchema = sequelize.define('User', {
     timestamps: false
   },
 )
-
-// function bcrypt 
-// userSchema.pre('save', async function(next) {
-//     const salt = await bcrypt.genSalt()
-//     this.password = await bcrypt.hash(this.password, salt)
-//     next()
-// }) 
 
 const userModel = sequelize.model('User', userSchema)
 module.exports = userModel;
