@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Se connecter</router-link> |
-      <router-link to="/signup">S'inscrire</router-link>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
     </nav>
-    <router-view />
+    <router-view/>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,16 +19,14 @@
 
 nav {
   padding: 30px;
-}
 
-nav a {
-  font-weight: bold;
-  font-size: 25px;
-  color: #2c3e50;
-  text-decoration: none;
-}
+  a {
+    font-weight: bold;
+    color: #2c3e50;
 
-nav a.router-link-exact-active {
-  color: rgb(10, 209, 150);
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>
