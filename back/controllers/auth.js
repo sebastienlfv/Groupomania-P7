@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 
 
 module.exports.signup = async (req, res) => {
-    bcrypt.hash(req.body.password, 10)
+    bcrypt.hash(req.body.password, 10
        .then(hash => {
            const user = new User({
                firstname: req.body.firstname,
