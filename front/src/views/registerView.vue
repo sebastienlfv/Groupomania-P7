@@ -1,5 +1,18 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="register">
+    <registerWorld />
   </div>
 </template>
+
+<script>
+
+import registerWorld from '@/components/register.vue'
+
+export default {
+  name: 'registerView',
+  components: {
+    registerWorld
+  }
+}
+
+</script>
