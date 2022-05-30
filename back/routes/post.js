@@ -10,9 +10,4 @@ router.put('/:id', postCtrl.updatePost)
 router.delete('/:id', postCtrl.deletePost)
 
 
-// route comments
-router.patch('/comment-post/:id', postCtrl.commentPost)
-router.patch('/delete-comment-post/:id', postCtrl.deleteCommentPost)
-
-
 module.exports = router;

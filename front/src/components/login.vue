@@ -1,8 +1,9 @@
 <template>
   <div class="login">
     <div id="connection-item">
-      <input type="text" placeholder="E-mail" id="email" minlength="5">
-      <input type="text" placeholder="password" id="password" minlength="4">
+      <input type="text" placeholder="E-mail" id="email" minlength="5" v-model="email">
+      <input type="text" placeholder="password" id="password" minlength="4" v-model="password">
+      <input type="submit" value="Se connecter" id="submit" @click="login()">
     </div>
   </div>
 </template>
@@ -12,6 +13,20 @@ export default {
   name: 'LoginWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      email: null,
+      password: null
+    }
+  },
+  methods: {
+    login() {
+      // recupéré les params
+      console.log(this.email, this.password);
+
+      // envoyer au back
+    }
   }
 }
 </script>
@@ -25,8 +40,23 @@ export default {
   width: 200px;
   margin: auto;
 
-  #email {
+  #submit {
+    width: 100px;
+    margin: auto;
+  }
+
+  #email{
     margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border-style: none;
+  }
+
+  #password {
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    border-style: none;
   }
 }
 

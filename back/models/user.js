@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('groupomania', 'root', process.env.MDP_DATABASE, {
+const sequelize = new Sequelize('groupomania', 'root', '1712Sebout!', {
     host: 'localhost',
     port: '3306',
     dialect: 'mysql'

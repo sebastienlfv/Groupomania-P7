@@ -36,31 +36,3 @@ module.exports.deletePost = (req, res) => {
     .then(() => res.status(200).json({ message: 'Post supprimé !' }))
     .catch(error => res.status(400).json({ error }))
 }
-
-module.exports.commentPost = (req, res) => {
-  try {
-    return postModel.findByPk(
-      req.params.id,
-      {
-        $push: {
-          comments: {
-            commenterId: req.body.commenterId,
-            commenterPseudo: req.body.commenterPseudo,
-            text: req.body.text
-          }
-        }
-      },
-      { new: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        else return res.status(400).send(err)
-      }
-    )
-  } catch(error) {
-    return res.status(400).send(err)
-  }
-}
-
-module.exports.deleteCommentPost = (req, res) => {
-    
-}

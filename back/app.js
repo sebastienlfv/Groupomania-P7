@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const userRoutes = require('./routes/user')
 const postRoutes = require('./routes/post')
+const roleRoutes = require('./routes/role')
 const dotenv = require('dotenv')
 const app = express();
 const Sequelize = require('sequelize')
@@ -10,7 +11,7 @@ const cors = require('cors')
 // connexion à la base de donnée
 dotenv.config()
 
-const sequelize = new Sequelize('groupomania', 'root', process.env.MDP_DATABASE, {
+const sequelize = new Sequelize(process.env.DATABASE, process.env.USER, '1712Sebout!', {
     host: 'localhost',
     port: '3306',
     dialect: 'mysql'
@@ -35,6 +36,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 // routes
 
 app.use('/api/user', userRoutes);
-app.use('/api/post', postRoutes)
+app.use('/api/post', postRoutes);
+app.use('/api/role', roleRoutes)
 
 module.exports = app;
