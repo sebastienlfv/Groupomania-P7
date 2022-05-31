@@ -9,7 +9,7 @@
 import LoginWorld from '@/components/login.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'loginView',
   components: {
     LoginWorld
   }

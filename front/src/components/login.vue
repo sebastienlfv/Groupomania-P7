@@ -9,6 +9,10 @@
 </template>
 
 <script>
+import router from '@/router';
+import axios from 'axios';
+
+
 export default {
   name: 'LoginWorld',
   props: {
@@ -20,12 +24,33 @@ export default {
       password: null
     }
   },
+  mounted() {
+    console.log(this.$router);
+  },
   methods: {
     login() {
       // recupéré les params
       console.log(this.email, this.password);
 
       // envoyer au back
+      const payload = {
+        email: this.email,
+        password: this.password
+      }
+
+      const url = 'http://localhost:3000/api/user/signin'
+
+      axios.post(url, payload)
+      .then((response) => {
+        console.log(response);
+        router.push({ path: '/home' })
+        // récuperé le token du back et l'enregistrer dans le localStorage
+        // passer le token dans la requete 'authorization bearer'
+        // faire la redirection vers la page d'accueil
+      })
+      .catch((error) => {
+        console.log(error);
+      })
     }
   }
 }
