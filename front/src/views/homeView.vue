@@ -1,18 +1,18 @@
 <template>
-    <div class="home">
-      <homeWorld />
-      <h3>TEST</h3>
-    </div>
+  <div class="home">
+    <home />
+  </div>
 </template>
 
 <script>
 
-import homeWorld from '@/components/home.vue'
+import home from '@/components/home.vue'
 
 export default {
     name: 'homeWorld',
     components: {
-        homeWorld
+        home
     }
 }
+
 </script>

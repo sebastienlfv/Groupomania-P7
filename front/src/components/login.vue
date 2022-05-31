@@ -2,14 +2,13 @@
   <div class="login">
     <div id="connection-item">
       <input type="text" placeholder="E-mail" id="email" minlength="5" v-model="email">
-      <input type="text" placeholder="password" id="password" minlength="4" v-model="password">
+      <input type="password" placeholder="Mot de passe" id="password" minlength="4" v-model="password">
       <input type="submit" value="Se connecter" id="submit" @click="login()">
     </div>
   </div>
 </template>
 
 <script>
-import router from '@/router';
 import axios from 'axios';
 
 
@@ -25,7 +24,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$router);
+    console.log('Router' ,this.$router);
   },
   methods: {
     login() {
@@ -42,11 +41,15 @@ export default {
 
       axios.post(url, payload)
       .then((response) => {
-        console.log(response);
-        router.push({ path: '/home' })
+
+        console.log('information utilisateur', response);
         // récuperé le token du back et l'enregistrer dans le localStorage
+
+        
+
         // passer le token dans la requete 'authorization bearer'
         // faire la redirection vers la page d'accueil
+        this.$router.push({ path: '/' })
       })
       .catch((error) => {
         console.log(error);

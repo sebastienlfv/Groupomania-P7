@@ -1,6 +1,7 @@
 <template>
-    <div class="home">
-        <h3>TEST</h3>
+    <div>
+        <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. At quod, impedit harum repudiandae dicta deleniti?</h3>
+        <p>Lorem ipsum dolor sit amet.</p>
     </div>
 </template>
 
@@ -14,3 +15,4 @@ export default {
 }
 
 </script>
+

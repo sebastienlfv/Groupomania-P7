@@ -1,19 +1,59 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <nav>
+      <router-link to="/"><img alt="Vue logo" src="./assets/logo.png" class="logo"></router-link>
+      <div>
+        <router-link to="/login">Se connecter</router-link>
+        <router-link to="/register">S'inscrire</router-link>
+      </div>
+    </nav>
     <div id="hub">
-      <nav>
-        <router-link to="/">Se connecter</router-link> |
-        <router-link to="/register">S'enregistrer</router-link>
-      </nav>
       <router-view/>
     </div>
   </div>
 </template>
 
+<script>
+
+</script>
+
 <style lang="scss">
 body {
   background-color: #FFD7D7;
+  margin: 0;
+}
+
+nav{
+  background-color: #2c3e50;
+  text-align: center;
+  padding-bottom: 15px;
+
+  div {
+    display: flex;
+    justify-content: right;
+    text-align: center;
+    align-items: center;
+    padding-top: 15px;
+    margin-right: 20px;
+
+    a{
+      margin: 0px 10px;
+      font-weight: bold;
+      color: #FFD7D7;
+      text-decoration: none;
+
+      &.router-link-exact-active {
+        color: #FD2D01;
+      }
+    }
+  }
+}
+
+.logo {
+  position: absolute;
+  top: -50px;
+  left: 50px;
+  width: 150px
 }
 
 #hub {
@@ -22,6 +62,7 @@ body {
   margin: auto;
   padding: 50px 0px;
   border-radius: 10px;
+  margin-top: 100px;
 }
 
 #app {
@@ -29,20 +70,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding-bottom: 30px;
-
-  a {
-    font-weight: bold;
-    color: #FFD7D7;
-    text-decoration: none;
-
-    &.router-link-exact-active {
-      color: #FD2D01;
-    }
-  }
+  color: white;
 }
 </style>
