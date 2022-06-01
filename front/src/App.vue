@@ -63,6 +63,7 @@ nav{
   padding: 50px 0px;
   border-radius: 10px;
   margin-top: 100px;
+  border: 1.5px solid black;
 }
 
 #app {

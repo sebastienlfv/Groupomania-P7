@@ -1,10 +1,11 @@
 <template>
   <div class="register">
+    <h1>S'inscrire</h1>
     <div id="register-item">
-      <input type="text" placeholder="Prenom" id="firstname" minlength="3">
-      <input type="text" placeholder="Nom" id="lastname" minlength="2">
-      <input type="text" placeholder="E-mail" id="email" minlength="5">
-      <input type="text" placeholder="Mot de passe" id="password" minlength="4">
+      <input type="text" placeholder="Prenom" id="firstname" minlength="3" v-model="firstname">
+      <input type="text" placeholder="Nom" id="lastname" minlength="2" v-model="lastname">
+      <input type="text" placeholder="E-mail" id="email" minlength="5" v-model="email">
+      <input type="password" placeholder="Mot de passe" id="password" minlength="4" v-model="password">
       <input type="submit" value="S'inscrire" id="submit" @click="register()">
     </div>
   </div>
@@ -50,7 +51,7 @@ export default {
           console.log(response);
           // recupéré le token du back et l'enregistrer dans le localStorage
           // faire la redirection vers la page d'accueil
-            router.push({ path: '/home' })
+            router.push({ path: '/' })
         })
     }
   }
@@ -58,6 +59,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+h1 {
+  font-size: 25px;
+  margin-bottom: 30px;
+}
 
 #register-item {
     display: flex;

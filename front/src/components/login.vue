@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <h1>Se connecter</h1>
     <div id="connection-item">
       <input type="text" placeholder="E-mail" id="email" minlength="5" v-model="email">
       <input type="password" placeholder="Mot de passe" id="password" minlength="4" v-model="password">
@@ -62,6 +63,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 
+h1 {
+  font-size: 25px;
+  margin-bottom: 30px;
+}
+
 #connection-item {
   display: flex;
   flex-direction: column;
@@ -86,20 +92,5 @@ export default {
     border-radius: 5px;
     border-style: none;
   }
-}
-
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>
