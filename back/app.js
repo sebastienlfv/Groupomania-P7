@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const userRoutes = require('./routes/user')
 const postRoutes = require('./routes/post')
-const roleRoutes = require('./routes/role')
 const dotenv = require('dotenv')
 const app = express();
 const Sequelize = require('sequelize')
@@ -37,6 +36,5 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
-app.use('/api/role', roleRoutes)
 
 module.exports = app;

@@ -2,9 +2,13 @@
   <div id="app">
     <nav>
       <router-link to="/"><img alt="Vue logo" src="./assets/logo.png" class="logo"></router-link>
-      <div>
+      <div v-if="isConnected">
         <router-link to="/login">Se connecter</router-link>
         <router-link to="/register">S'inscrire</router-link>
+      </div>
+      <div v-else>
+        <router-link to ="/profile">Profile</router-link>
+        <h1 class="disconnect" @click="disconnect()">Se déconnecter</h1>
       </div>
     </nav>
     <div id="hub">
@@ -14,6 +18,38 @@
 </template>
 
 <script>
+
+export default {
+  name: 'appWorld',
+  props: {
+    msg: String
+  },
+  data() {
+    return {
+      isConnected: true
+    };
+  },
+  mounted() {
+    // console.log(isDeconnected);
+    this.checkConnected()
+  },
+  methods: {
+    disconnect() {
+      localStorage.clear()
+      this.$router.push({ path: '/login' })
+      window.location.reload()
+    },
+    checkConnected() {
+      let checkToken = localStorage.getItem('token')
+      console.log (checkToken)
+      console.log(typeof checkToken)
+      if( checkToken ) {
+        this.isConnected = false;
+      }
+      console.log('isConnected', this.isConnected)
+    }
+  }
+}
 
 </script>
 
@@ -36,11 +72,13 @@ nav{
     padding-top: 15px;
     margin-right: 20px;
 
-    a{
+    a, h1{
+      font-size: 20px;
       margin: 0px 10px;
       font-weight: bold;
       color: #FFD7D7;
       text-decoration: none;
+      cursor: pointer;
 
       &.router-link-exact-active {
         color: #FD2D01;

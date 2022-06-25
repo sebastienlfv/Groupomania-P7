@@ -7,19 +7,25 @@ const sequelize = new Sequelize('groupomania', 'root', '1712Sebout!', {
 });
 
 const postSchema = sequelize.define('Post', {
-    postId: {
+    userId: {
         type: DataTypes.STRING,
         allowNull: true,
     },
     message: {
         type: DataTypes.STRING,
         validator: {
-            max: 500,
+            max: 100,
         }
     },
     picture: {
-        type: DataTypes.STRING
-    }
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    likes: {
+        type: DataTypes.NUMBER,
+        allowNull: true
+    },
+    usersLiked : []
   },
   {
     timestamps: false

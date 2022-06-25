@@ -4,42 +4,84 @@ const bcrypt = require('bcrypt')
 
 
 module.exports.signup = async (req, res) => {
-    bcrypt.hash(req.body.password, 10)
-       .then(hash => {
-           const user = new User({
-               firstname: req.body.firstname,
-               lastname: req.body.lastname,
-               email: req.body.email,
-               password: hash
-           })
-           user.save()
-             .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-             .catch(error => res.status(400).json({ error }))
-       })
-       .catch(error => res.status(500).json({ error: 'test' }))
-}
+    // Params
+    var firstname = req.body.firstname
+    var lastname = req.body.lastname
+    var email = req.body.email
+    var password = req.body.password
 
-module.exports.signin = async(req, res) => {
-    User.findOne({ email: req.body.email })
-      .then(user => {
-          if (!user) {
-              return res.status(401).json({ error: 'Utilisateur non trouvé !' })
-          }
-          bcrypt.compare(req.body.password, user.password)
-            .then(valid => {
-                if (!valid) {
-                    return res.status(401).json({ error: 'Mot de passe incorrect !' })
-                }
-                res.status(200).json({
-                    userId: user.id,
-                    token: jwt.sign(
-                        { userId: user.id },
-                        'RANDOM_TOKEN_SECRET',
-                        { expiresIn: '24h' }
-                    )
+    if (email == null || firstname == null || lastname == null || password == null) {
+        return res.status(400).json({ error: 'missing parameters' })
+    }
+
+    User.findOne({
+        attributes: ['email'],
+        where: { email: email }
+    })
+    .then(function(userFound){
+        if (!userFound) {
+
+            bcrypt.hash(password, 10, function(err, hash){
+                var newUser = User.create({
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    password: hash
+                })
+                .then(function(newUser){
+                    return res.status(201).json({
+                        'userId': newUser.id
+                    })
+                })
+                .catch(function(err){
+                    return res.status(500).json({ error: 'cannot add user' })
                 })
             })
-            .catch(error => res.status(500).json({ error }))
-      })
-      .catch(error => res.status(500).json({ error }))
+        } else {
+            return res.status(409).json({ error :'user already exist' })
+        }
+    })
+    .catch(function(err){
+        return res.status(500).json({ error: 'unable to verify user' })
+    })
+}
+
+module.exports.signin = async (req, res) => {
+    // Params
+    var email = req.body.email
+    var password = req.body.password
+
+    if(email == null || password == null) {
+        return res.status(400).json({ error: 'missing parameters' })
+    }
+
+    User.findOne({
+        where: { email: email }
+    })
+    .then(function(userFound){
+        if(userFound) {
+
+            bcrypt.compare(password, userFound.password, function(errHash, resHash){
+                if(resHash){
+                    return res.status(200).json({
+                        'userId': userFound.id,
+                        'token': jwt.sign(
+                            { userId: userFound.id },
+                            'RANDOM_TOKEN_SECRET',
+                            { expiresIn: '1h' }
+                         
+                        ),
+                        'email': userFound.email
+                    })
+                } else {
+                    return res.status(403).json({ error: 'Invalid password' })
+                }
+            })
+        } else {
+            return res.status(404).json({ error: 'user not exist in DB' })
+        }
+    })
+    .catch(function(err){
+        return res.status(500).json({ error: 'unable to verify user' })
+    })
 }

@@ -29,12 +29,11 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$router);
+
   },
   methods: {
     register() {
       // recupéré les params
-      console.log(this.firstname, this.lastname, this.email, this.password);
 
       //envoyer au back
       const payload = {
@@ -49,9 +48,8 @@ export default {
       axios.post(url, payload)
         .then((response) => {
           console.log(response);
-          // recupéré le token du back et l'enregistrer dans le localStorage
           // faire la redirection vers la page d'accueil
-            router.push({ path: '/' })
+            router.push({ path: '/login' })
         })
     }
   }
@@ -74,6 +72,7 @@ h1 {
     #submit {
     width: 100px;
     margin: auto;
+    cursor: pointer;
     }
 
     #firstname, #lastname, #email {

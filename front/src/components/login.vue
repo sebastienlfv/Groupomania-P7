@@ -21,11 +21,11 @@ export default {
   data() {
     return {
       email: null,
-      password: null
+      password: null,
     }
   },
   mounted() {
-    console.log('Router' ,this.$router);
+
   },
   methods: {
     login() {
@@ -41,20 +41,29 @@ export default {
       const url = 'http://localhost:3000/api/user/signin'
 
       axios.post(url, payload)
-      .then((response) => {
+        .then((response) => {
 
-        console.log('information utilisateur', response);
-        // récuperé le token du back et l'enregistrer dans le localStorage
+          // récuperé le token du back et l'enregistrer dans le localStorage
 
+          const token = JSON.stringify(response.data.token)
+
+          localStorage.setItem('token', JSON.parse(token))
+          localStorage.setItem('userId', JSON.stringify(response.data.userId))
+          localStorage.setItem('email', JSON.stringify(response.data.email))
+          
+          // passer le token dans la requete 'authorization bearer'
         
+          // utiliser le store (vuex) pour stocker le role
+          this.$store.dispatch('setRole', {role: response.data.role})
+          this.$store.dispatch('setConnected', {role: response.data.token})
 
-        // passer le token dans la requete 'authorization bearer'
-        // faire la redirection vers la page d'accueil
-        this.$router.push({ path: '/' })
+          // faire la redirection vers la page d'accueil
+          this.$router.push({ path: '/' })
       })
       .catch((error) => {
         console.log(error);
       })
+
     }
   }
 }
@@ -77,6 +86,7 @@ h1 {
   #submit {
     width: 100px;
     margin: auto;
+    cursor: pointer;
   }
 
   #email{

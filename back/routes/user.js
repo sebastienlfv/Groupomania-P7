@@ -8,6 +8,8 @@ router.post('/signup', authCtrl.signup);
 router.post('/signin', authCtrl.signin);
 
 // user db
+router.get('/', userCtrl.getAllUsers)
+router.get('/:id', userCtrl.getOneUser)
 router.delete('/:id', userCtrl.deleteUser)
 
 

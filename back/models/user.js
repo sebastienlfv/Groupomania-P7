@@ -5,6 +5,8 @@ const sequelize = new Sequelize('groupomania', 'root', '1712Sebout!', {
     dialect: 'mysql'
 });
 
+// ASSOSIATION TABLE USER ET POSTS
+
 const userSchema = sequelize.define('User', {
     firstname: {
         type: DataTypes.STRING,
@@ -38,6 +40,10 @@ const userSchema = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    isAdmin: {
+        type: DataTypes.NUMBER,
+        defaultValue: "0"
+    }
   },
   {
     timestamps: false
