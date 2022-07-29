@@ -54,8 +54,9 @@ export default {
           // passer le token dans la requete 'authorization bearer'
         
           // utiliser le store (vuex) pour stocker le role
-          this.$store.dispatch('setRole', {role: response.data.role})
-          this.$store.dispatch('setConnected', {role: response.data.token})
+
+          this.$store.dispatch('setRole', false ) // la valeur de role retourné par le back
+          this.$store.dispatch('setConnected', true)
 
           // faire la redirection vers la page d'accueil
           this.$router.push({ path: '/' })

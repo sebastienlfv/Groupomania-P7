@@ -9,7 +9,7 @@ router.get('/', auth, postCtrl.readPost)
 router.post('/', multer, postCtrl.createPost)
 router.put('/:id', auth, multer, postCtrl.updatePost)
 router.delete('/:id', auth, postCtrl.deletePost)
-router.post('/:id/like', postCtrl.likeSauce)
+router.post('/:id/like', postCtrl.likePost)
 
 
 module.exports = router;

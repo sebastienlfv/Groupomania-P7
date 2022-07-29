@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     role:null,
     user:null,
-    isConnected: null
+    isConnected: false
   },
   getters: {
     getRole(state){
@@ -21,7 +21,7 @@ export default new Vuex.Store({
     SET_ROLE(state, role) {
       state.role = role;
     },
-    SET_ISCONNECTED(state, isConnected) {
+    SET_CONNECTED(state, isConnected) {
       state.isConnected = isConnected
     }
     // DELETE_USER(state) {
@@ -32,8 +32,9 @@ export default new Vuex.Store({
     setRole({commit}, role) {
       commit('SET_ROLE', role)
     },
-    setIsConnected({commit}, isConnected){
-      commit('SET_isConnected', isConnected)
+    setConnected({commit}, isConnected){
+      console.log('isConnected', isConnected)
+      commit('SET_CONNECTED', isConnected)
     }
     // logout({commit}) {
     //   commit('DELETE_USER')

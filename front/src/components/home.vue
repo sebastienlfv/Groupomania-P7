@@ -1,12 +1,11 @@
 <template>
     <div class="home">
         <div class="sendPost">
-            <!-- ajout de l'image de l'utilisateur connecter -->
             <img src="../assets/default_user.png" alt="Default user" id="user_picture">
             <div class="allThings" v-if="isAdd == true">
                 <input type="text" placeholder="Quoi de neuf ?" id="sendMessage" v-model="message">
                 <div class="things">
-                    <input class="form-control" type="file" accept=".jpg,.jpeg,.jpng" required>
+                    <input class="form-control" type="file" accept=".jpg,.jpeg,.jpng" ref="picture" @change="selectFile()">
                     <img src="../assets/send_post.png" alt="sendPost" class="send" @click="createPost()">
                 </div>
             </div>
@@ -32,16 +31,25 @@
                             <button id="cancelModify" @click="cancelModifyPost()">Annuler</button>
                         </div>
                     </div>
-                    <div class="post_info">            
-                        <div class="post_picture">
-                            {{ post.picture }}
+                    <div class="post_info">
+                        <div class="post_picture" v-if="post.picture">
+                            <img :src="post.picture">
                         </div>
                         <div class="post_title">
                             {{ post.message }}
                         </div>
                         <div class="post_like">
-                            <p @click="likePost(post.id)">Like</p>
+
+                            <p v-if="post.usersLiked && hasLiked(post.usersLiked)" @click="likePost(post.id, 0)">Annuler le like</p>
+                            <p v-else @click="likePost(post.id, 1)">Like</p>
+                            <div v-if="post.usersLiked" class="numberOfLikes">
+                              {{ JSON.parse(post.usersLiked).length }}
+                            </div>
+                            <div v-else>
+                              0
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -60,138 +68,163 @@ export default {
     },
     data() {
         return {
-            posts: [],
-            message: null,
-            picture: null,
-            currentPost: null,
-            isAdd: true,
-            isModify: false,
-            isConnected: true
+          posts: [],
+          message: null,
+          picture: null,
+          likes: null,
+          currentPost: null,
+          isAdd: true,
+          isModify: false,
+          isConnected: true
         }
     },
+/*    computed: {
+
+    },*/
     async mounted() {
         await this.displayPost();
         this.checkConnected()
     },
     methods: {
-        likePost(postID) {
+      selectFile() {
+        this.picture = this.$refs.picture.files[0]
+      },
+      likePost(postID, action) {
 
-            this.currentPost = postID
-            const urlLike = 'http://localhost:3000/api/post/' + this.currentPost + '/like'
-            const header = { headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')}}
+        const userId = localStorage.getItem('userId')
 
-            axios.post(urlLike, header)
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((error) => {
-                console.log(error);
-              })
-        },
-        cancelModifyPost(postID){
-            this.currentPost = postID
-
-            this.currentPost = postID
-            this.isAdd = true
-            this.isModify = false
-
-        },
-        deletePost(postID) {
-
-            this.currentPost = postID
-
-            const header = { headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')}}
-
-            const urlDetelte = 'http://localhost:3000/api/post/' + this.currentPost
-
-            axios.delete(urlDetelte, header)
-              .then((response) => {
-                  console.log(response);
-                  this.displayPost()
-              })
-              .catch((error) => {
-                  console.log(error);
-              })
-        },
-        modifyPost() {
-
-            const urlModify = 'http://localhost:3000/api/post/' + this.currentPost
-            const payload = {
-                message: this.message
-            }
-            const header = { headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')}}
-            
-
-            axios.put(urlModify, payload, header)
-              .then((response) => {
-                  console.log(response);
-                  this.displayPost()
-                  this.cancelModifyPost()
-                  document.querySelector('input').placeholder = 'test'
-              })
-              .catch((error) => {
-                  console.log(error);
-              })
-        },
-        DisplayModifyPost(postID) {
-            // document.getElementById('modifyPost').style.display = 'flex'
-
-            this.currentPost = postID
-            this.isAdd = false
-            this.isModify = true
-            
-        },
-        checkConnected() {
-            return this.$store.getters.getConnected
-        },
-        getRole(){
-            return this.$store.getters.getRole
-        },
-        getUserId(){
-            return localStorage.getItem('userId')
-        },
-        displayPost() {
-            console.log('token', localStorage.getItem('token'));
-            // récupéré les params
-            const urlPost = 'http://localhost:3000/api/post'
-            const header = { headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')}}
-        
-
-            axios.get(urlPost, header)
-              .then((response) => {
-                console.log('response',response.data);
-                this.posts = response.data
-                
-              })
-              .catch((error) => {
-                console.log(error);
-              })
-        },
-        createPost() {
-            const urlPost = 'http://localhost:3000/api/post'
-            const header = { headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')}}
-
-            const payload = {
-                message: this.message,
-                picture: this.picture,
-                userId: this.getUserId()
-                // userId: userId a récupérer du token ou localstorage
-            }
-
-            axios.post(urlPost, payload, header)
-              .then((response) => {
-                  console.log('Information post', response);
-                  this.displayPost()
-              })
-              .catch((error) => {
-                  console.log(error);
-              })
+        const payload = {
+          userId: userId,
+          isLikeOrUnlike: action
         }
+
+        const urlLike = 'http://localhost:3000/api/post/' + postID + '/like'
+        const header = { headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')}}
+
+        axios.post(urlLike, payload, header)
+          .then((response) => {
+            console.log('userLiked', response.data.usersLikedUpdated)
+            console.log('numberOfLikes', response.data.usersLikedUpdated.length)
+            this.displayPost()
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      },
+      cancelModifyPost(postID){
+          this.currentPost = postID
+          this.isAdd = true
+          this.isModify = false
+          this.message = ''
+      },
+      deletePost(postID) {
+
+          this.currentPost = postID
+
+          const header = { headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token')}}
+
+          const urlDetelte = 'http://localhost:3000/api/post/' + this.currentPost
+
+          axios.delete(urlDetelte, header)
+            .then((response) => {
+                console.log('item supprimé',response);
+                this.displayPost()
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+      },
+      modifyPost() {
+        const urlModify = 'http://localhost:3000/api/post/' + this.currentPost
+        const payload = {
+            message: this.message
+        }
+        const header = { headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')}}
+
+
+        axios.put(urlModify, payload, header)
+          .then((response) => {
+              console.log(response);
+              this.displayPost()
+              this.isAdd = true
+              this.isModify = false
+              this.message = ''
+
+          })
+          .catch((error) => {
+              console.log(error);
+          })
+      },
+      DisplayModifyPost(postID) {
+          this.currentPost = postID
+          this.isAdd = false
+          this.isModify = true
+          this.message = ''
+
+      },
+      checkConnected() {
+          return this.$store.getters.getConnected
+      },
+      getRole(){
+          return this.$store.getters.getRole
+      },
+      getUserId(){
+          return localStorage.getItem('userId')
+      },
+      displayPost() {
+          console.log('token', localStorage.getItem('token'));
+          // récupéré les params
+          const urlPost = 'http://localhost:3000/api/post'
+          const header = { headers: {
+                  Authorization: 'Bearer ' + localStorage.getItem('token')}}
+
+
+          axios.get(urlPost, header)
+            .then((response) => {
+              console.log('display post',response.data);
+              this.posts = response.data
+              console.log("this.posts", this.posts)
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+      },
+      hasLiked(arrayUsersLiked){
+        const userId = localStorage.getItem('userId')
+        return JSON.parse(arrayUsersLiked) == userId
+      },
+      createPost() {
+          const urlPost = 'http://localhost:3000/api/post'
+          const header = { headers: {
+                  Authorization: 'Bearer ' + localStorage.getItem('token'),
+                  'Content-Type': 'multipart/form-data'
+          }}
+
+          const formData = new FormData()
+          formData.append('image', this.picture)
+
+          const publication = {
+            message: this.message,
+            userId: this.getUserId(),
+            likes: this.likes
+          }
+          formData.append('publication', JSON.stringify(publication))
+
+          axios.post(urlPost, formData, header, )
+            .then((response) => {
+              console.log('Information post', response);
+              this.message = ''
+              this.displayPost()
+
+              // eslint-disable-next-line no-empty
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+      }
     }
 }
 
@@ -200,6 +233,13 @@ export default {
 
 <style scoped lang="scss">
 
+body {
+  color: #000;
+}
+
+.numberOfLikes {
+  color: #000;
+}
 .post {
     background-color: white;
     margin-top: 40px;
@@ -210,32 +250,41 @@ export default {
     border-radius: 5px;
 
     .post_info {
-        width: 80%;
-        margin: auto;
-        margin-top: 15px;
+      width: 80%;
+      margin: auto;
+      margin-top: 15px;
 
         .post_title {
-            background-color: gray;
-            border-radius: 5px;
+          background-color: gray;
+          border-radius: 5px;
         }
 
         .post_like {
-            margin-bottom: 0px;
-            text-align: left;
+          color: #000;
+          text-align: left;
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+          gap: 10px;
             p {
-                color: black;
-                margin-bottom: 0px;
-                cursor: pointer;
+              color: black;
+              margin-bottom: 0px;
+              margin-top: 0px;
+              cursor: pointer;
             }
+
+          span {
+            color: #000;
+          }
         }
     }
 
     .user_info {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin-left: 10px;
-        padding-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-left: 10px;
+      padding-bottom: 10px;
 
         .user {
             display: flex;

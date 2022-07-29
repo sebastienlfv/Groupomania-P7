@@ -1,25 +1,41 @@
 <template>
-  <div id="app"> 
-    <header-app />
-    <div id="hub">
-      <router-view/>
-    </div>
+  <div>
+    <nav>
+      <router-link to="/"><img alt="Vue logo" src="../assets/logo.png" class="logo"></router-link>
+      <div v-if="isConnected()">
+        <router-link to ="/profile">Profile</router-link>
+        <h1 class="disconnect" @click="disconnect()">Se déconnecter</h1>
+      </div>
+      <div v-else>
+        <router-link to="/login">Se connecter</router-link>
+        <router-link to="/register">S'inscrire</router-link>        
+      </div>
+    </nav>
   </div>
 </template>
 
 <script>
 
-import headerApp from '@/components/header.vue'
-
 export default {
-  name: 'appWorld',
+  name: 'headerApp',
   props: {
     msg: String
   },
-  components: {
-    headerApp
+  mounted() {
+    // console.log(isDeconnected);
+    // this.checkConnected()
+  },
+  methods: {
+    disconnect() {
+      localStorage.clear()
+      this.$router.push({ path: '/login' })
+      this.$store.dispatch('setConnected', false)
+    },
+    isConnected() {
+      console.log('isConnected', this.isConnected)
+      return this.$store.getters.getConnected
+    }
   }
-
 }
 
 </script>

@@ -1,23 +1,33 @@
-const multer = require('multer')
-
-const MIME_TYPE = {
+const multer = require('multer');
+const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png'
+};
+
+let counter = 1
+let prevRandom = 1
+
+const random = (max = 100) => {
+  time = new Date().getTime()
+  randomValue = ((time / counter) / (prevRandom + 1)) % max
+  counter++
+  prevRandom = randomValue
+  return parseInt(randomValue)
 }
+
+console.log('random number', random())
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'images')
+    callback(null, 'images');
   },
   filename: (req, file, callback) => {
-    const name = file.originalname.split(' ').join('_')
-    const extension = MIME_TYPE[file.mimetype]
-
-    callback(null, name + '_' + extension)
+    const name = file.originalname.split(' ').join('_');
+    const extension = MIME_TYPES[file.mimetype];
+    callback(null, name + random())
+/*    callback(null, name + '_' + extension)*/
   }
-})
+});
 
-
-
-module.exports = multer(storage).single('image')
+module.exports = multer({storage: storage}).single('image');
