@@ -16,8 +16,6 @@ const random = (max = 100) => {
   return parseInt(randomValue)
 }
 
-console.log('random number', random())
-
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'images');
@@ -26,7 +24,6 @@ const storage = multer.diskStorage({
     const name = file.originalname.split(' ').join('_');
     const extension = MIME_TYPES[file.mimetype];
     callback(null, name + random())
-/*    callback(null, name + '_' + extension)*/
   }
 });
 

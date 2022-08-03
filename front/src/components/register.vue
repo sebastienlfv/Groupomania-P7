@@ -33,9 +33,6 @@ export default {
   },
   methods: {
     register() {
-      // recupéré les params
-
-      //envoyer au back
       const payload = {
         firstname : this.firstname,
         lastname: this.lastname,
@@ -43,13 +40,11 @@ export default {
         password: this.password
       }
 
-      const url = 'http://localhost:3000/api/user/signup'
+      const url = 'http://localhost:3002/api/user/signup'
 
       axios.post(url, payload)
-        .then((response) => {
-          console.log(response);
-          // faire la redirection vers la page d'accueil
-            router.push({ path: '/login' })
+        .then(() => {
+          router.push({ path: '/login' })
         })
     }
   }

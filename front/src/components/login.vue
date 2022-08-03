@@ -29,40 +29,30 @@ export default {
   },
   methods: {
     login() {
-      // recupéré les params
-      console.log(this.email, this.password);
-
-      // envoyer au back
       const payload = {
         email: this.email,
         password: this.password
       }
 
-      const url = 'http://localhost:3000/api/user/signin'
+      const url = 'http://localhost:3002/api/user/signin'
 
       axios.post(url, payload)
         .then((response) => {
-
-          // récuperé le token du back et l'enregistrer dans le localStorage
 
           const token = JSON.stringify(response.data.token)
 
           localStorage.setItem('token', JSON.parse(token))
           localStorage.setItem('userId', JSON.stringify(response.data.userId))
           localStorage.setItem('email', JSON.stringify(response.data.email))
-          
-          // passer le token dans la requete 'authorization bearer'
-        
-          // utiliser le store (vuex) pour stocker le role
 
-          this.$store.dispatch('setRole', false ) // la valeur de role retourné par le back
+          this.$store.dispatch('setRole', JSON.parse(response.data.role))
           this.$store.dispatch('setConnected', true)
 
-          // faire la redirection vers la page d'accueil
           this.$router.push({ path: '/' })
       })
       .catch((error) => {
         console.log(error);
+        alert('Veuillez renseigner des informations valide !')
       })
 
     }
@@ -70,7 +60,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 
 h1 {

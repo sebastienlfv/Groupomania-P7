@@ -71,7 +71,8 @@ module.exports.signin = async (req, res) => {
                             { expiresIn: '1h' }
                          
                         ),
-                        'email': userFound.email
+                        'email': userFound.email,
+                        'role': userFound.isAdmin
                     })
                 } else {
                     return res.status(403).json({ error: 'Invalid password' })

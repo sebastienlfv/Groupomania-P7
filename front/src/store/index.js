@@ -24,20 +24,13 @@ export default new Vuex.Store({
     SET_CONNECTED(state, isConnected) {
       state.isConnected = isConnected
     }
-    // DELETE_USER(state) {
-    //   state.user = null;
-    // }    
   },
   actions: {
     setRole({commit}, role) {
       commit('SET_ROLE', role)
     },
     setConnected({commit}, isConnected){
-      console.log('isConnected', isConnected)
       commit('SET_CONNECTED', isConnected)
     }
-    // logout({commit}) {
-    //   commit('DELETE_USER')
-    // }
   }
 })

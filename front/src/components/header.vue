@@ -21,10 +21,6 @@ export default {
   props: {
     msg: String
   },
-  mounted() {
-    // console.log(isDeconnected);
-    // this.checkConnected()
-  },
   methods: {
     disconnect() {
       localStorage.clear()
@@ -32,7 +28,6 @@ export default {
       this.$store.dispatch('setConnected', false)
     },
     isConnected() {
-      console.log('isConnected', this.isConnected)
       return this.$store.getters.getConnected
     }
   }

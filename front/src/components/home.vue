@@ -21,7 +21,7 @@
                             <img src="../assets/default_user.png" alt="" class="user_picture">                        
                             <h3 class="user_pseudo">{{ post.userId }}</h3>
                         </div>
-                        <div class="modify">
+                        <div class="modify" v-if="isAdmin() || isPostOwner(post.userId)">
                             <button id="modify" @click="DisplayModifyPost(post.id)">Modifier</button>
                             <button id="delete" @click="deletePost(post.id)">Supprimer</button>
                         </div>
@@ -39,7 +39,6 @@
                             {{ post.message }}
                         </div>
                         <div class="post_like">
-
                             <p v-if="post.usersLiked && hasLiked(post.usersLiked)" @click="likePost(post.id, 0)">Annuler le like</p>
                             <p v-else @click="likePost(post.id, 1)">Like</p>
                             <div v-if="post.usersLiked" class="numberOfLikes">
@@ -78,12 +77,12 @@ export default {
           isConnected: true
         }
     },
-/*    computed: {
-
-    },*/
     async mounted() {
-        await this.displayPost();
-        this.checkConnected()
+        if (!this.checkConnected()) {
+          this.$router.push({ path: '/login' })
+        }else {
+          await this.displayPost()
+        }
     },
     methods: {
       selectFile() {
@@ -98,14 +97,12 @@ export default {
           isLikeOrUnlike: action
         }
 
-        const urlLike = 'http://localhost:3000/api/post/' + postID + '/like'
+        const urlLike = 'http://localhost:3002/api/post/' + postID + '/like'
         const header = { headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')}}
 
         axios.post(urlLike, payload, header)
-          .then((response) => {
-            console.log('userLiked', response.data.usersLikedUpdated)
-            console.log('numberOfLikes', response.data.usersLikedUpdated.length)
+          .then(() => {
             this.displayPost()
           })
           .catch((error) => {
@@ -125,11 +122,10 @@ export default {
           const header = { headers: {
               Authorization: 'Bearer ' + localStorage.getItem('token')}}
 
-          const urlDetelte = 'http://localhost:3000/api/post/' + this.currentPost
+          const urlDetelte = 'http://localhost:3002/api/post/' + this.currentPost
 
           axios.delete(urlDetelte, header)
-            .then((response) => {
-                console.log('item supprimé',response);
+            .then(() => {
                 this.displayPost()
             })
             .catch((error) => {
@@ -137,17 +133,15 @@ export default {
             })
       },
       modifyPost() {
-        const urlModify = 'http://localhost:3000/api/post/' + this.currentPost
+        const urlModify = 'http://localhost:3002/api/post/' + this.currentPost
         const payload = {
             message: this.message
         }
         const header = { headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')}}
 
-
         axios.put(urlModify, payload, header)
-          .then((response) => {
-              console.log(response);
+          .then(() => {
               this.displayPost()
               this.isAdd = true
               this.isModify = false
@@ -168,25 +162,25 @@ export default {
       checkConnected() {
           return this.$store.getters.getConnected
       },
-      getRole(){
+      isAdmin(){
           return this.$store.getters.getRole
+      },
+      isPostOwner(postUserID) {
+        const userId = localStorage.getItem('userId')
+        return postUserID === userId
       },
       getUserId(){
           return localStorage.getItem('userId')
       },
       displayPost() {
-          console.log('token', localStorage.getItem('token'));
-          // récupéré les params
-          const urlPost = 'http://localhost:3000/api/post'
+          const urlPost = 'http://localhost:3002/api/post'
           const header = { headers: {
                   Authorization: 'Bearer ' + localStorage.getItem('token')}}
 
 
           axios.get(urlPost, header)
             .then((response) => {
-              console.log('display post',response.data);
               this.posts = response.data
-              console.log("this.posts", this.posts)
             })
             .catch((error) => {
               console.log(error);
@@ -197,7 +191,7 @@ export default {
         return JSON.parse(arrayUsersLiked) == userId
       },
       createPost() {
-          const urlPost = 'http://localhost:3000/api/post'
+          const urlPost = 'http://localhost:3002/api/post'
           const header = { headers: {
                   Authorization: 'Bearer ' + localStorage.getItem('token'),
                   'Content-Type': 'multipart/form-data'
@@ -213,13 +207,10 @@ export default {
           }
           formData.append('publication', JSON.stringify(publication))
 
-          axios.post(urlPost, formData, header, )
-            .then((response) => {
-              console.log('Information post', response);
+          axios.post(urlPost, formData, header )
+            .then(() => {
               this.message = ''
               this.displayPost()
-
-              // eslint-disable-next-line no-empty
             })
             .catch((error) => {
                 console.log(error);

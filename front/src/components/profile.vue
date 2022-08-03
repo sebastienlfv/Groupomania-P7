@@ -43,7 +43,7 @@ export default {
     },
     DeleteAccount() {
       const ID = localStorage.getItem('userId')
-      const url = 'http://localhost:3000/api/user/' + ID
+      const url = 'http://localhost:3002/api/user/' + ID
 
       axios.delete(url)
         .then((response) => {
@@ -57,7 +57,7 @@ export default {
     },
     displayUserInfo() {
       const ID = localStorage.getItem('userId')
-      const url = 'http://localhost:3000/api/user/' + ID
+      const url = 'http://localhost:3002/api/user/' + ID
 
 
       axios.get(url)
