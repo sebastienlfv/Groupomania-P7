@@ -395,4 +395,21 @@ body {
     }
 }
 
+@media (max-width: 500px) {
+  #separateur {
+    h2 {
+      width: 45%;
+    }
+  }
+
+  .sendPost {
+    .allThings {
+      input {
+        width: 180px;
+        height: 25px;
+      }
+    }
+  }
+}
+
 </style>

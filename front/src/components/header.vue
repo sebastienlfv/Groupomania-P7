@@ -76,21 +76,21 @@ nav{
   width: 150px
 }
 
-#hub {
-  background-color: #2c3e50;
-  width: 500px;
-  margin: auto;
-  padding: 50px 0px;
-  border-radius: 10px;
-  margin-top: 100px;
-  border: 1.5px solid black;
-}
+@media (max-width: 500px) {
+  nav{
+    div {
+      a, h1{
+        font-size: 16px !important;
+        margin: 0px 5px !important;
+      }
+    }
+  }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
+  .logo {
+    position: absolute;
+    top: -38px !important;
+    left: 10px !important;
+    width: 125px !important;
+  }
 }
 </style>

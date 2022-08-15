@@ -82,4 +82,10 @@ nav{
   text-align: center;
   color: white;
 }
+
+@media (max-width: 500px) {
+  #hub {
+    width: 340px;
+  }
+}
 </style>
