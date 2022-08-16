@@ -75,7 +75,7 @@ module.exports.likePost = async (req, res) => {
       break;
     case 0:
       if (storageUserLiked.includes(userId)) {
-        storageUserLiked.splice(userId, 1)
+        storageUserLiked.splice(userId,1)
       }
       break;
   }

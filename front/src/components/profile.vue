@@ -39,7 +39,6 @@ export default {
     disconnect() {
       localStorage.clear()
       this.$router.push({ path: '/login' })
-      window.location.reload()
     },
     DeleteAccount() {
       const ID = localStorage.getItem('userId')
@@ -49,7 +48,8 @@ export default {
         .then((response) => {
           console.log(response);
           localStorage.clear()
-          this.$router.push({ path: '/' })
+          this.$router.push({ path: '/login' })
+          this.$store.dispatch('setConnected', false)
         })
         .catch((error) => {
           console.log(error);

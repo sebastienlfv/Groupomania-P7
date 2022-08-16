@@ -188,7 +188,8 @@ export default {
       },
       hasLiked(arrayUsersLiked){
         const userId = localStorage.getItem('userId')
-        return JSON.parse(arrayUsersLiked) == userId
+        const arrayUser = JSON.parse(arrayUsersLiked.includes(userId))
+        return arrayUser
       },
       createPost() {
           const urlPost = 'http://localhost:3002/api/post'

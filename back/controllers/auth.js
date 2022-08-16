@@ -72,7 +72,8 @@ module.exports.signin = async (req, res) => {
                          
                         ),
                         'email': userFound.email,
-                        'role': userFound.isAdmin
+                        'role': userFound.isAdmin,
+                        'name': userFound.firstname + ' ' + userFound.lastname
                     })
                 } else {
                     return res.status(403).json({ error: 'Invalid password' })

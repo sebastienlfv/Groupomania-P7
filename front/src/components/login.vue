@@ -40,10 +40,12 @@ export default {
         .then((response) => {
 
           const token = JSON.stringify(response.data.token)
+          console.log('response',response.data)
 
           localStorage.setItem('token', JSON.parse(token))
           localStorage.setItem('userId', JSON.stringify(response.data.userId))
           localStorage.setItem('email', JSON.stringify(response.data.email))
+          localStorage.setItem('name', JSON.stringify(response.data.name))
 
           this.$store.dispatch('setRole', JSON.parse(response.data.role))
           this.$store.dispatch('setConnected', true)
